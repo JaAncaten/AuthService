@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.vetnova.authservice.model.AuthUsuario;
 import com.vetnova.authservice.repository.AuthUsuarioRepository;
+import com.vetnova.authservice.security.JwtService;
 
 @Service
 public class AuthService {
 
     @Autowired
     private AuthUsuarioRepository authUsuarioRepository;
+
+    @Autowired
+    private JwtService jwtService;
 
     public List<AuthUsuario> obtenerUsuariosAuth() {
         return authUsuarioRepository.findAll();
@@ -30,7 +34,7 @@ public class AuthService {
             AuthUsuario usuario = usuarioEncontrado.get();
 
             if (usuario.getPassword().equals(password)) {
-                return "Login correcto - Rol: " + usuario.getRol();
+                return jwtService.generarToken(usuario.getCorreo(), usuario.getRol());
             }
         }
 

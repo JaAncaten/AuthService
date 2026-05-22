@@ -1,6 +1,7 @@
 package com.vetnova.authservice.controller;
 
 import java.util.List;
+import com.vetnova.authservice.dto.LoginResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AuthUsuario usuario) {
-        return authService.login(usuario.getCorreo(), usuario.getPassword());
-    }
+public LoginResponse login(@RequestBody AuthUsuario usuario) {
+    return authService.login(usuario.getCorreo(), usuario.getPassword());
+}
 }

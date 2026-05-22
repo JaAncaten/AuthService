@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vetnova.authservice.dto.LoginResponse;
 import com.vetnova.authservice.model.AuthUsuario;
 import com.vetnova.authservice.repository.AuthUsuarioRepository;
 import com.vetnova.authservice.security.JwtService;
@@ -27,17 +28,18 @@ public class AuthService {
         return authUsuarioRepository.save(usuario);
     }
 
-    public String login(String correo, String password) {
+    public LoginResponse login(String correo, String password) {
         Optional<AuthUsuario> usuarioEncontrado = authUsuarioRepository.findByCorreo(correo);
 
         if (usuarioEncontrado.isPresent()) {
             AuthUsuario usuario = usuarioEncontrado.get();
 
             if (usuario.getPassword().equals(password)) {
-                return jwtService.generarToken(usuario.getCorreo(), usuario.getRol());
+                String token = jwtService.generarToken(usuario.getCorreo(), usuario.getRol());
+                return new LoginResponse(token, "Bearer");
             }
         }
 
-        return "Credenciales incorrectas";
+        return null;
     }
 }

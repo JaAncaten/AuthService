@@ -25,6 +25,11 @@ public class AuthService {
     }
 
     public AuthUsuario registrar(AuthUsuario usuario) {
+
+        if (authUsuarioRepository.existsByCorreo(usuario.getCorreo())) {
+            return null;
+        }
+
         return authUsuarioRepository.save(usuario);
     }
 

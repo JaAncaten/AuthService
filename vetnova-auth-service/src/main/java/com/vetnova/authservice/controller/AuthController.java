@@ -22,9 +22,16 @@ public class AuthController {
     }
 
     @PostMapping("/registro")
-    public AuthUsuario registrar(@RequestBody AuthUsuario usuario) {
-        return authService.registrar(usuario);
+    public Object registrar(@RequestBody AuthUsuario usuario) {
+
+    AuthUsuario usuarioRegistrado = authService.registrar(usuario);
+
+    if (usuarioRegistrado == null) {
+        return "El correo ya se encuentra registrado";
     }
+
+    return usuarioRegistrado;
+}
 
     @PostMapping("/login")
 public LoginResponse login(@RequestBody AuthUsuario usuario) {

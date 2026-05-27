@@ -1,11 +1,12 @@
 package com.vetnova.authservice.controller;
 
 import java.util.List;
-import com.vetnova.authservice.dto.LoginResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.vetnova.authservice.dto.LoginResponse;
+import com.vetnova.authservice.dto.RegistroRequest;
 import com.vetnova.authservice.model.AuthUsuario;
 import com.vetnova.authservice.service.AuthService;
 
@@ -22,19 +23,19 @@ public class AuthController {
     }
 
     @PostMapping("/registro")
-    public Object registrar(@RequestBody AuthUsuario usuario) {
+    public Object registrar(@RequestBody RegistroRequest request) {
 
-    AuthUsuario usuarioRegistrado = authService.registrar(usuario);
+        AuthUsuario usuarioRegistrado = authService.registrarDesdeRequest(request);
 
-    if (usuarioRegistrado == null) {
-        return "El correo ya se encuentra registrado";
+        if (usuarioRegistrado == null) {
+            return "El correo ya se encuentra registrado";
+        }
+
+        return usuarioRegistrado;
     }
 
-    return usuarioRegistrado;
-}
-
     @PostMapping("/login")
-public LoginResponse login(@RequestBody AuthUsuario usuario) {
-    return authService.login(usuario.getCorreo(), usuario.getPassword());
-}
+    public LoginResponse login(@RequestBody AuthUsuario usuario) {
+        return authService.login(usuario.getCorreo(), usuario.getPassword());
+    }
 }
